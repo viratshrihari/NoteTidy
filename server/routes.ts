@@ -192,6 +192,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI-powered note enhancement
+  app.post("/api/notes/enhance", async (req, res) => {
+    try {
+      const { messyText, style } = req.body;
+      
+      if (!messyText) {
+        return res.status(400).json({ message: "No text provided for enhancement" });
+      }
+
+      const stylePrompts = {
+        cornell: "Format this as Cornell Notes with main notes, cues/keywords, and a summary section at the bottom.",
+        bullet: "Format this as organized bullet points with clear hierarchy and structure.",
+        mindmap: "Format this as a mind map structure with central topic and branching subtopics.",
+        freeform: "Clean up and organize this text while maintaining a natural flow."
+      };
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `You are an expert note-taking assistant. Take messy, OCR-extracted text and transform it into clean, well-organized notes. ${stylePrompts[style] || stylePrompts.freeform} 
+
+            Guidelines:
+            - Fix OCR errors and typos
+            - Organize information logically
+            - Add proper formatting and structure
+            - Preserve all important mathematical formulas and equations
+            - Make the content clear and easy to study from
+            - Generate a clear, descriptive title
+            
+            Return your response as JSON with this format:
+            {
+              "title": "Clear descriptive title",
+              "content": "Well-formatted note content",
+              "keyPoints": ["point1", "point2", "point3"],
+              "summary": "Brief summary of the main concepts"
+            }`
+          },
+          {
+            role: "user",
+            content: `Please enhance and organize this messy text:\n\n${messyText}`
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: 1000,
+      });
+
+      const enhanced = JSON.parse(completion.choices[0].message.content || "{}");
+      res.json(enhanced);
+    } catch (error) {
+      console.error("Enhancement error:", error);
+      res.status(500).json({ message: "Failed to enhance note" });
+    }
+  });
+
   // AI-powered note analysis
   app.post("/api/notes/:id/analyze", async (req, res) => {
     try {
