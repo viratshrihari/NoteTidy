@@ -189,7 +189,7 @@ export function QuizTab() {
             ].map(({ mode, title, desc }) => (
               <div
                 key={mode}
-                className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                className={`game-mode-card p-4 border rounded-lg cursor-pointer transition-all ${
                   selectedMode === mode ? 'border-primary bg-primary/10' : 'hover:bg-muted'
                 }`}
                 onClick={() => setSelectedMode(mode)}

@@ -165,6 +165,51 @@
     padding: 0;
     font-family: inherit;
   }
+
+  /* Quiz Gaming Animations */
+  @keyframes pulse-correct {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); background-color: #10b981; }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes pulse-incorrect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); background-color: #ef4444; }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes streak-glow {
+    0%, 100% { box-shadow: 0 0 5px #f59e0b; }
+    50% { box-shadow: 0 0 20px #f59e0b, 0 0 30px #f59e0b; }
+  }
+
+  .quiz-correct {
+    animation: pulse-correct 0.6s ease-in-out;
+  }
+
+  .quiz-incorrect {
+    animation: pulse-incorrect 0.6s ease-in-out;
+  }
+
+  .streak-active {
+    animation: streak-glow 1.5s ease-in-out infinite;
+  }
+
+  .game-mode-card:hover {
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .power-up-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
 }
 
 /* Smooth transitions */
