@@ -8,6 +8,7 @@ import { StudyToolsTab } from "@/components/tabs/StudyToolsTab";
 import { QuizTab } from "@/components/tabs/QuizTab";
 import { ChatTab } from "@/components/tabs/ChatTab";
 import { SettingsTab } from "@/components/tabs/SettingsTab";
+import { AdBanner } from "@/components/AdBanner";
 import { useApp } from "@/contexts/AppContext";
 
 export default function NoteTidy() {
@@ -22,7 +23,10 @@ export default function NoteTidy() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="flex-1">
+      {/* Top Banner Ad */}
+      <AdBanner position="top" size="small" />
+      
+      <main className="flex-1 pt-4">
         
         {/* Upload Notes Tab */}
         <div className={`tab-content ${state.currentTab === "uploadTab" ? "active" : ""}`}>

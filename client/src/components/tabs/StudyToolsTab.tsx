@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
+import { NativeAd } from "../AdBanner";
 import { Brain, BookOpen, GitBranch, TrendingDown, RotateCcw, CheckCircle, AlertCircle, Target } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "../../hooks/use-toast";

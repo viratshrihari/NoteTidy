@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NoteCard } from "@/components/NoteCard";
+import { NativeAd } from "@/components/AdBanner";
 import { useApp } from "@/contexts/AppContext";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -106,12 +107,20 @@ export function NotesTab() {
         {/* Notes Grid */}
         {notes.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {notes.map((note) => (
-              <NoteCard
-                key={note.id}
-                note={note}
-                onClick={() => handleNoteClick(note)}
-              />
+            {notes.map((note, index) => (
+              <>
+                <NoteCard
+                  key={note.id}
+                  note={note}
+                  onClick={() => handleNoteClick(note)}
+                />
+                {/* Show native ad after every 4th note */}
+                {(index + 1) % 4 === 0 && (
+                  <div className="md:col-span-2 lg:col-span-3">
+                    <NativeAd />
+                  </div>
+                )}
+              </>
             ))}
           </div>
         ) : (
