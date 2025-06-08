@@ -37,7 +37,7 @@ export function formatBytes(bytes: number): string {
 }
 
 export function clearAllData(): void {
-  const keysToKeep = ["noteflow-theme", "noteflow-settings"];
+  const keysToKeep = ["notetidy-theme", "notetidy-settings"];
   const keys = Object.keys(localStorage);
   
   keys.forEach(key => {

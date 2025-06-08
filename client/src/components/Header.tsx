@@ -18,7 +18,7 @@ export function Header() {
           <div className="w-6 h-6 bg-white bg-opacity-20 rounded flex items-center justify-center">
             <span className="text-sm font-bold">N</span>
           </div>
-          <h1 className="text-lg font-medium">NoteFlow</h1>
+          <h1 className="text-lg font-medium">NoteTidy</h1>
         </div>
         
         <div className="flex items-center space-x-3">

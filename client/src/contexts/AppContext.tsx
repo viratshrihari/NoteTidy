@@ -91,7 +91,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Load settings from localStorage
   useEffect(() => {
-    const savedSettings = localStorage.getItem("noteflow-settings");
+    const savedSettings = localStorage.getItem("notetidy-settings");
     if (savedSettings) {
       try {
         const settings = JSON.parse(savedSettings);
@@ -104,7 +104,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Save settings to localStorage when they change
   useEffect(() => {
-    localStorage.setItem("noteflow-settings", JSON.stringify(state.settings));
+    localStorage.setItem("notetidy-settings", JSON.stringify(state.settings));
   }, [state.settings]);
 
   return (

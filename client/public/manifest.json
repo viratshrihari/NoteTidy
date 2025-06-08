@@ -1,6 +1,6 @@
 {
-  "name": "NoteFlow - Smart Note Taking",
-  "short_name": "NoteFlow",
+  "name": "NoteTidy - Smart Note Taking",
+  "short_name": "NoteTidy",
   "description": "A progressive web app for intelligent note-taking with OCR and AI assistance",
   "start_url": "/",
   "display": "standalone",

@@ -14,7 +14,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Load theme from localStorage
-    const savedTheme = localStorage.getItem("noteflow-theme") as Theme;
+    const savedTheme = localStorage.getItem("notetidy-theme") as Theme;
     if (savedTheme) {
       setTheme(savedTheme);
     } else {
@@ -33,7 +33,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
     
     // Save to localStorage
-    localStorage.setItem("noteflow-theme", theme);
+    localStorage.setItem("notetidy-theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {

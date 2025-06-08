@@ -52,7 +52,7 @@ export function SettingsTab() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `noteflow-export-${new Date().toISOString().split('T')[0]}.json`;
+      a.download = `notetidy-export-${new Date().toISOString().split('T')[0]}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -232,7 +232,7 @@ export function SettingsTab() {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Info className="text-primary mr-3 h-5 w-5" />
-              About NoteFlow
+              About NoteTidy
             </CardTitle>
           </CardHeader>
           <CardContent>
