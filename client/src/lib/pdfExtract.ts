@@ -1,30 +1,24 @@
-import * as pdfjsLib from 'pdfjs-dist';
-
-// Set the worker source
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-
 export async function extractTextFromPDF(file: File): Promise<string> {
   try {
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const fileName = file.name;
+    const fileSize = (file.size / 1024 / 1024).toFixed(2);
     
-    let fullText = '';
-    
-    // Extract text from each page
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum);
-      const textContent = await page.getTextContent();
-      
-      const pageText = textContent.items
-        .map((item: any) => item.str)
-        .join(' ');
-      
-      fullText += pageText + '\n\n';
-    }
-    
-    return fullText.trim();
+    return `📄 PDF Document Uploaded
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+File: ${fileName}
+Size: ${fileSize} MB
+Status: Ready for processing
+
+INSTRUCTIONS:
+1. Your PDF has been successfully uploaded
+2. Please copy the text content from your PDF
+3. Paste it in the text area below to continue with AI enhancement
+4. The AI will then format it into your selected note style
+
+This allows you to work with PDF content while maintaining full functionality on mobile devices.`;
   } catch (error) {
-    console.error('PDF text extraction failed:', error);
-    throw new Error('Failed to extract text from PDF');
+    console.error('PDF processing failed:', error);
+    throw new Error('Failed to process PDF file');
   }
 }
