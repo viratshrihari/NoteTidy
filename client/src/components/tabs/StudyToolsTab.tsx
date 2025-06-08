@@ -211,6 +211,9 @@ export function StudyToolsTab() {
           <p className="text-muted-foreground">Advanced study features powered by AI</p>
         </div>
 
+        {/* Native Ad in Study Tools */}
+        <NativeAd className="mb-4" />
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Flashcards Tool */}
           <Card className="cursor-pointer hover:shadow-md transition-shadow">

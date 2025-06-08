@@ -61,6 +61,9 @@ export default function NoteTidy() {
       </main>
 
       <BottomNavigation />
+      
+      {/* Bottom Banner Ad */}
+      <AdBanner position="bottom" size="small" />
 
       {/* Floating Action Button */}
       <Button
