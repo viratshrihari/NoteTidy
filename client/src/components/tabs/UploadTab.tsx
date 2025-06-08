@@ -203,13 +203,14 @@ export function UploadTab() {
               onClick={() => fileInputRef.current?.click()}
             >
               <Image className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-lg mb-2">Drop images here or click to select</p>
-              <p className="text-sm text-muted-foreground">Supports JPG, PNG files</p>
+              <p className="text-lg mb-2">Drop files here or click to select</p>
+              <p className="text-sm text-muted-foreground">Supports JPG, PNG, and PDF files</p>
               <input
                 ref={fileInputRef}
                 type="file"
                 className="hidden"
-                accept="image/*"
+                accept="image/*,.pdf"
+                capture="environment"
                 onChange={handleFileInput}
               />
             </div>

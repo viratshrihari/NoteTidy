@@ -6,7 +6,7 @@ import OpenAI from "openai";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import pdf from "pdf-parse";
+// PDF parsing will be handled on frontend for now
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ 
@@ -126,25 +126,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const fileExtension = path.extname(req.file.originalname).toLowerCase();
       let extractedText = "";
 
-      // Handle PDF files
-      if (fileExtension === '.pdf') {
-        try {
-          const dataBuffer = fs.readFileSync(req.file.path);
-          const pdfData = await pdf(dataBuffer);
-          extractedText = pdfData.text;
-        } catch (pdfError) {
-          console.error("PDF extraction error:", pdfError);
-          return res.status(500).json({ message: "Failed to extract text from PDF" });
-        }
-      }
+      // PDF files will be handled on frontend with pdf.js
 
-      // Return file info and extracted text (for PDFs)
+      // Return file info
       res.json({ 
         success: true, 
         filePath: req.file.path,
         originalName: req.file.originalname,
-        fileType: fileExtension === '.pdf' ? 'pdf' : 'image',
-        extractedText: extractedText || null
+        fileType: fileExtension === '.pdf' ? 'pdf' : 'image'
       });
     } catch (error) {
       console.error("Upload error:", error);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { recognizeText } from "@/lib/tesseract";
+import { extractTextFromPDF } from "@/lib/pdfExtract";
 
 interface UseOCRResult {
   extractText: (file: File) => Promise<string>;
@@ -16,10 +17,15 @@ export function useOCR(): UseOCRResult {
     setError(null);
 
     try {
-      const text = await recognizeText(file);
-      return text;
+      if (file.type === 'application/pdf') {
+        const text = await extractTextFromPDF(file);
+        return text;
+      } else {
+        const text = await recognizeText(file);
+        return text;
+      }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to extract text from image";
+      const errorMessage = err instanceof Error ? err.message : "Text extraction failed";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
