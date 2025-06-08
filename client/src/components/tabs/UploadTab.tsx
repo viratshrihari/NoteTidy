@@ -101,10 +101,11 @@ export function UploadTab() {
   };
 
   const handleFile = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+    if (!validTypes.includes(file.type)) {
       toast({
         title: "Invalid file type",
-        description: "Please select an image file (JPG, PNG).",
+        description: "Please select an image file (JPG, PNG) or PDF document.",
         variant: "destructive",
       });
       return;

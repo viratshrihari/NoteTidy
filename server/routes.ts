@@ -6,6 +6,7 @@ import OpenAI from "openai";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import pdf from "pdf-parse";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ 
@@ -116,19 +117,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Image upload route
-  app.post("/api/upload", upload.single("image"), async (req, res) => {
+  app.post("/api/upload", upload.single("file"), async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
 
-      // Return file path for frontend OCR processing
+      const fileExtension = path.extname(req.file.originalname).toLowerCase();
+      let extractedText = "";
+
+      // Handle PDF files
+      if (fileExtension === '.pdf') {
+        try {
+          const dataBuffer = fs.readFileSync(req.file.path);
+          const pdfData = await pdf(dataBuffer);
+          extractedText = pdfData.text;
+        } catch (pdfError) {
+          console.error("PDF extraction error:", pdfError);
+          return res.status(500).json({ message: "Failed to extract text from PDF" });
+        }
+      }
+
+      // Return file info and extracted text (for PDFs)
       res.json({ 
         success: true, 
         filePath: req.file.path,
-        originalName: req.file.originalname
+        originalName: req.file.originalname,
+        fileType: fileExtension === '.pdf' ? 'pdf' : 'image',
+        extractedText: extractedText || null
       });
     } catch (error) {
+      console.error("Upload error:", error);
       res.status(500).json({ message: "Failed to upload file" });
     }
   });
