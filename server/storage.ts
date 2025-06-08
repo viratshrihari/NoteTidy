@@ -71,8 +71,12 @@ export class MemStorage implements IStorage {
     const id = this.currentNoteId++;
     const now = new Date();
     const note: Note = { 
-      ...insertNote, 
       id, 
+      title: insertNote.title,
+      content: insertNote.content,
+      style: insertNote.style || "freeform",
+      imageUrl: insertNote.imageUrl || null,
+      extractedText: insertNote.extractedText || null,
       createdAt: now,
       updatedAt: now
     };
