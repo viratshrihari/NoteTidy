@@ -291,6 +291,274 @@ SUMMARY:
     }
   });
 
+  // Generate flashcards from notes
+  app.post("/api/notes/:id/flashcards", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const note = await storage.getNote(id);
+      
+      if (!note) {
+        return res.status(404).json({ message: "Note not found" });
+      }
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `You are an expert flashcard creator for students. Create effective flashcards from the note content that promote active recall and spaced repetition learning.
+
+            Guidelines:
+            - Create 8-12 flashcards covering key concepts
+            - Questions should test understanding, not just memorization
+            - Include variety: definitions, applications, comparisons, examples
+            - Keep answers concise but complete
+            - Use clear, student-friendly language
+
+            Return JSON in this format:
+            {
+              "flashcards": [
+                {
+                  "id": 1,
+                  "front": "Question or prompt",
+                  "back": "Clear, concise answer",
+                  "category": "concept|definition|application|example",
+                  "difficulty": "easy|medium|hard"
+                }
+              ]
+            }`
+          },
+          {
+            role: "user",
+            content: `Create flashcards from this note:\n\nTitle: ${note.title}\nContent: ${note.content}`
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: 1500,
+      });
+
+      const flashcards = JSON.parse(completion.choices[0].message.content || "{}");
+      res.json(flashcards);
+    } catch (error) {
+      console.error("Flashcard generation error:", error);
+      res.status(500).json({ message: "Failed to generate flashcards" });
+    }
+  });
+
+  // Generate practice test from multiple notes
+  app.post("/api/notes/practice-test", async (req, res) => {
+    try {
+      const { noteIds, testLength = 10 } = req.body;
+      
+      if (!noteIds || noteIds.length === 0) {
+        return res.status(400).json({ message: "No notes selected" });
+      }
+
+      const notes = await Promise.all(
+        noteIds.map((id: number) => storage.getNote(id))
+      );
+      
+      const validNotes = notes.filter(note => note !== undefined);
+      if (validNotes.length === 0) {
+        return res.status(404).json({ message: "No valid notes found" });
+      }
+
+      const notesContent = validNotes.map(note => 
+        `Title: ${note!.title}\nContent: ${note!.content}`
+      ).join('\n\n---\n\n');
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `Create a comprehensive practice test from multiple study notes. Mix question types and difficulty levels to create a realistic exam experience.
+
+            Create ${testLength} questions with these types:
+            - Multiple choice (60%)
+            - True/False (20%) 
+            - Short answer (20%)
+
+            Return JSON in this format:
+            {
+              "testInfo": {
+                "title": "Practice Test",
+                "totalQuestions": ${testLength},
+                "estimatedTime": "X minutes",
+                "topics": ["topic1", "topic2"]
+              },
+              "questions": [
+                {
+                  "id": 1,
+                  "type": "multiple_choice|true_false|short_answer",
+                  "question": "Question text",
+                  "options": ["A", "B", "C", "D"] // only for multiple choice
+                  "correctAnswer": "correct answer or option",
+                  "explanation": "Why this answer is correct",
+                  "points": 1,
+                  "difficulty": "easy|medium|hard",
+                  "topic": "source topic"
+                }
+              ]
+            }`
+          },
+          {
+            role: "user",
+            content: `Create a practice test from these notes:\n\n${notesContent}`
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: 2000,
+      });
+
+      const practiceTest = JSON.parse(completion.choices[0].message.content || "{}");
+      res.json(practiceTest);
+    } catch (error) {
+      console.error("Practice test generation error:", error);
+      res.status(500).json({ message: "Failed to generate practice test" });
+    }
+  });
+
+  // Analyze concept connections between notes
+  app.post("/api/notes/concept-connections", async (req, res) => {
+    try {
+      const notes = await storage.getAllNotes();
+      
+      if (notes.length < 2) {
+        return res.json({ 
+          connections: [],
+          message: "Need at least 2 notes to find connections"
+        });
+      }
+
+      const notesContent = notes.map(note => ({
+        id: note.id,
+        title: note.title,
+        content: note.content.substring(0, 500) // Limit content for analysis
+      }));
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `Analyze study notes to find conceptual connections, relationships, and knowledge gaps. Help students understand how different topics relate to each other.
+
+            Return JSON in this format:
+            {
+              "connections": [
+                {
+                  "noteIds": [1, 2],
+                  "noteTitles": ["Note 1", "Note 2"],
+                  "connectionType": "prerequisite|related|builds_on|contradicts|example_of",
+                  "relationship": "Brief description of how they connect",
+                  "strength": "weak|moderate|strong"
+                }
+              ],
+              "concepts": [
+                {
+                  "concept": "Key concept name",
+                  "frequency": 3,
+                  "noteIds": [1, 2, 3],
+                  "importance": "high|medium|low"
+                }
+              ],
+              "recommendations": [
+                "Study suggestion based on connections"
+              ]
+            }`
+          },
+          {
+            role: "user",
+            content: `Analyze connections between these notes:\n\n${JSON.stringify(notesContent, null, 2)}`
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: 1500,
+      });
+
+      const analysis = JSON.parse(completion.choices[0].message.content || "{}");
+      res.json(analysis);
+    } catch (error) {
+      console.error("Concept analysis error:", error);
+      res.status(500).json({ message: "Failed to analyze concept connections" });
+    }
+  });
+
+  // Analyze study weaknesses and provide recommendations
+  app.post("/api/study/weakness-analysis", async (req, res) => {
+    try {
+      const { quizResults, noteActivity } = req.body;
+      const notes = await storage.getAllNotes();
+
+      // Get all notes content for analysis
+      const notesContent = notes.map(note => ({
+        id: note.id,
+        title: note.title,
+        style: note.style
+      }));
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `Analyze a student's study patterns, quiz performance, and note-taking habits to identify weaknesses and provide personalized study recommendations.
+
+            Return JSON in this format:
+            {
+              "weaknessAnalysis": {
+                "overallScore": 75,
+                "strengths": ["area1", "area2"],
+                "weaknesses": ["area1", "area2"],
+                "studyHabits": "assessment of note-taking and quiz patterns"
+              },
+              "recommendations": [
+                {
+                  "type": "content|method|timing|review",
+                  "priority": "high|medium|low",
+                  "suggestion": "Specific actionable advice",
+                  "reason": "Why this will help"
+                }
+              ],
+              "focusAreas": [
+                {
+                  "topic": "Topic name",
+                  "noteIds": [1, 2],
+                  "suggestedActions": ["action1", "action2"]
+                }
+              ],
+              "studyPlan": {
+                "todaysFocus": "What to study today",
+                "thisWeekGoals": ["goal1", "goal2"],
+                "reviewSchedule": "When to review previous material"
+              }
+            }`
+          },
+          {
+            role: "user",
+            content: `Analyze study patterns:
+            
+            Notes Created: ${notes.length}
+            Note Styles Used: ${Array.from(new Set(notes.map(n => n.style))).join(', ')}
+            Recent Quiz Results: ${JSON.stringify(quizResults || [])}
+            Note Activity: ${JSON.stringify(noteActivity || {})}
+            
+            Available Notes: ${JSON.stringify(notesContent)}`
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: 1500,
+      });
+
+      const analysis = JSON.parse(completion.choices[0].message.content || "{}");
+      res.json(analysis);
+    } catch (error) {
+      console.error("Weakness analysis error:", error);
+      res.status(500).json({ message: "Failed to analyze study weaknesses" });
+    }
+  });
+
   // Generate quiz questions from notes
   app.post("/api/notes/:id/quiz", async (req, res) => {
     try {
