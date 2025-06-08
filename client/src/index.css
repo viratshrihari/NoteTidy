@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 98%);
+  --foreground: hsl(210, 11%, 13%);
+  --muted: hsl(210, 11%, 96%);
+  --muted-foreground: hsl(215, 16%, 45%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(210, 11%, 13%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(210, 11%, 13%);
+  --border: hsl(214, 13%, 90%);
+  --input: hsl(214, 13%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(210, 100%, 99%);
+  --secondary: hsl(174, 100%, 44%);
+  --secondary-foreground: hsl(210, 11%, 13%);
+  --accent: hsl(210, 11%, 96%);
+  --accent-foreground: hsl(210, 11%, 13%);
+  --destructive: hsl(0, 84%, 38%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(207, 90%, 54%);
+  --radius: 0.5rem;
+
+  /* NoteFlow specific colors */
+  --primary-dark: hsl(207, 84%, 42%);
+  --surface: hsl(0, 0%, 100%);
+  --surface-dark: hsl(210, 11%, 7%);
+  --background-light: hsl(0, 0%, 98%);
+  --background-dark: hsl(210, 11%, 12%);
+  --on-surface: hsl(210, 11%, 13%);
+  --on-surface-dark: hsl(210, 11%, 88%);
+  --error: hsl(0, 84%, 38%);
+}
+
+.dark {
+  --background: hsl(210, 11%, 12%);
+  --foreground: hsl(210, 11%, 88%);
+  --muted: hsl(210, 11%, 16%);
+  --muted-foreground: hsl(215, 16%, 65%);
+  --popover: hsl(210, 11%, 7%);
+  --popover-foreground: hsl(210, 11%, 88%);
+  --card: hsl(210, 11%, 7%);
+  --card-foreground: hsl(210, 11%, 88%);
+  --border: hsl(210, 11%, 16%);
+  --input: hsl(210, 11%, 16%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(210, 100%, 99%);
+  --secondary: hsl(174, 100%, 44%);
+  --secondary-foreground: hsl(210, 11%, 88%);
+  --accent: hsl(210, 11%, 16%);
+  --accent-foreground: hsl(210, 11%, 88%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(207, 90%, 54%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+}
+
+@layer components {
+  .tab-content {
+    @apply hidden;
+  }
+  
+  .tab-content.active {
+    @apply block;
+  }
+  
+  .tab-button.active {
+    @apply text-primary bg-blue-50 dark:bg-blue-900 dark:bg-opacity-20;
+  }
+  
+  .tab-button:not(.active) {
+    @apply text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .material-shadow {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);
+  }
+
+  .material-shadow-lg {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.15);
+  }
+}
+
+@layer utilities {
+  .animate-bounce-slow {
+    animation: bounce 2s infinite;
+  }
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Chat messages scroll behavior */
+#chatMessages {
+  scroll-behavior: smooth;
+}
+
+/* PWA viewport handling */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Touch-friendly interface improvements */
+@media (pointer: coarse) {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
