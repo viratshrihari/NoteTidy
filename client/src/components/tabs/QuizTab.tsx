@@ -313,7 +313,7 @@ export function QuizTab() {
             </CardTitle>
             <div className="flex gap-2">
               <Badge variant={question.difficulty === 'easy' ? 'secondary' : question.difficulty === 'medium' ? 'default' : 'destructive'}>
-                {question.difficulty}
+                {question.difficulty || 'medium'}
               </Badge>
               <Badge variant="outline">{question.points} pts</Badge>
               {question.powerUp !== 'none' && (
