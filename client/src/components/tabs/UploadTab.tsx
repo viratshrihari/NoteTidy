@@ -291,10 +291,32 @@ export function UploadTab() {
             <CardContent className="space-y-4">
               <div>
                 <h3 className="font-medium text-lg mb-2">{enhancedNote.title}</h3>
-                <div className="prose prose-sm max-w-none dark:prose-invert">
-                  <pre className="whitespace-pre-wrap text-sm bg-muted p-4 rounded-lg">
-                    {enhancedNote.content}
-                  </pre>
+                <div className="bg-white dark:bg-gray-900 border rounded-lg p-4">
+                  {state.settings.defaultNoteStyle === 'cornell' ? (
+                    <div className="cornell-notes">
+                      <pre className="whitespace-pre-wrap text-sm font-mono leading-relaxed">
+                        {enhancedNote.content}
+                      </pre>
+                    </div>
+                  ) : state.settings.defaultNoteStyle === 'bullet' ? (
+                    <div className="bullet-points">
+                      <pre className="whitespace-pre-wrap text-sm leading-relaxed">
+                        {enhancedNote.content}
+                      </pre>
+                    </div>
+                  ) : state.settings.defaultNoteStyle === 'mindmap' ? (
+                    <div className="mind-map">
+                      <pre className="whitespace-pre-wrap text-sm font-mono leading-relaxed text-center">
+                        {enhancedNote.content}
+                      </pre>
+                    </div>
+                  ) : (
+                    <div className="freeform-notes">
+                      <pre className="whitespace-pre-wrap text-sm leading-relaxed">
+                        {enhancedNote.content}
+                      </pre>
+                    </div>
+                  )}
                 </div>
               </div>
 

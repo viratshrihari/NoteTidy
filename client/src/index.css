@@ -112,6 +112,59 @@
   .animate-bounce-slow {
     animation: bounce 2s infinite;
   }
+
+  /* Cornell Notes Styling */
+  .cornell-notes {
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+  }
+
+  .cornell-notes pre {
+    border-left: 3px solid hsl(var(--primary));
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Bullet Points Styling */
+  .bullet-points {
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .bullet-points pre {
+    margin: 0;
+    padding: 0;
+    color: hsl(var(--foreground));
+  }
+
+  /* Mind Map Styling */
+  .mind-map {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .dark .mind-map {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  }
+
+  .mind-map pre {
+    margin: 0;
+    padding: 0;
+    color: hsl(var(--foreground));
+  }
+
+  /* Freeform Notes Styling */
+  .freeform-notes {
+    font-family: Georgia, serif;
+    line-height: 1.7;
+  }
+
+  .freeform-notes pre {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+  }
 }
 
 /* Smooth transitions */

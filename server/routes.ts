@@ -202,10 +202,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const stylePrompts = {
-        cornell: "Format this as Cornell Notes with main notes, cues/keywords, and a summary section at the bottom.",
-        bullet: "Format this as organized bullet points with clear hierarchy and structure.",
-        mindmap: "Format this as a mind map structure with central topic and branching subtopics.",
-        freeform: "Clean up and organize this text while maintaining a natural flow."
+        cornell: `Format this as Cornell Notes using this exact structure:
+        
+CUES/KEYWORDS          |  MAIN NOTES
+-----------------------|--------------------------------
+[Key terms here]       |  [Detailed content here]
+[Questions here]       |  [Explanations here]
+[Important concepts]   |  [Examples and formulas]
+
+SUMMARY:
+[Brief summary of all main concepts]`,
+        
+        bullet: `Format this as organized bullet points with clear hierarchy:
+• Main Topic/Chapter
+  ○ Subtopic 1
+    ▪ Detail or example
+    ▪ Supporting information
+  ○ Subtopic 2
+    ▪ Detail or example
+• Second Main Topic
+  ○ Subtopic
+    ▪ Details`,
+    
+        mindmap: `Format this as a text-based mind map structure:
+        
+                    [CENTRAL TOPIC]
+                         |
+        ┌────────────────┼────────────────┐
+        │                │                │
+   [BRANCH 1]      [BRANCH 2]      [BRANCH 3]
+        │                │                │
+   ┌────┼────┐      ┌────┼────┐      ┌────┼────┐
+   │    │    │      │    │    │      │    │    │
+[SUB1][SUB2][SUB3][SUB4][SUB5][SUB6][SUB7][SUB8][SUB9]`,
+
+        freeform: "Clean up and organize this text while maintaining a natural paragraph flow with clear headings and logical structure."
       };
 
       const completion = await openai.chat.completions.create({
@@ -213,22 +244,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         messages: [
           {
             role: "system",
-            content: `You are an expert note-taking assistant. Take messy, OCR-extracted text and transform it into clean, well-organized notes. ${stylePrompts[style] || stylePrompts.freeform} 
+            content: `You are an expert note-taking assistant. Take messy, OCR-extracted text and transform it into clean, well-organized notes following the EXACT format specified below.
 
-            Guidelines:
-            - Fix OCR errors and typos
-            - Organize information logically
-            - Add proper formatting and structure
-            - Preserve all important mathematical formulas and equations
-            - Make the content clear and easy to study from
-            - Generate a clear, descriptive title
+            FORMATTING INSTRUCTIONS: ${stylePrompts[style as keyof typeof stylePrompts] || stylePrompts.freeform}
+
+            CRITICAL REQUIREMENTS:
+            - Fix ALL OCR errors and typos
+            - Follow the formatting structure EXACTLY as shown above
+            - Preserve all mathematical formulas and equations
+            - Use proper spacing and alignment for the chosen format
+            - For Cornell notes: Use the pipe | character to create columns
+            - For bullet points: Use the exact bullet symbols shown (•, ○, ▪)
+            - For mind maps: Use the ASCII art structure with proper alignment
+            - Make content study-ready and academically rigorous
             
             Return your response as JSON with this format:
             {
               "title": "Clear descriptive title",
-              "content": "Well-formatted note content",
-              "keyPoints": ["point1", "point2", "point3"],
-              "summary": "Brief summary of the main concepts"
+              "content": "Content formatted in the EXACT style requested with proper structure",
+              "keyPoints": ["key concept 1", "key concept 2", "key concept 3"],
+              "summary": "Brief summary of the main concepts covered"
             }`
           },
           {
