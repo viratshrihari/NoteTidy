@@ -283,6 +283,73 @@ SUMMARY:
     }
   });
 
+  // Generate quiz questions from notes
+  app.post("/api/notes/:id/quiz", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { mode, difficulty } = req.body;
+      const note = await storage.getNote(id);
+      
+      if (!note) {
+        return res.status(404).json({ message: "Note not found" });
+      }
+
+      const quizPrompts = {
+        speedrun: `Create a fast-paced quiz with 5 quick questions for speedrun mode. Make questions short and snappy with clear right/wrong answers. Include timer pressure elements.`,
+        
+        survival: `Create a survival mode quiz with 8 questions that get progressively harder. Start easy and increase difficulty. Include "lives" system where wrong answers cost health points.`,
+        
+        battle: `Create a battle royale style quiz with 6 strategic questions. Include power-ups, shields, and special abilities. Make it competitive and exciting with point multipliers.`
+      };
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `You are a gamified quiz generator for Gen Z students. ${quizPrompts[mode as keyof typeof quizPrompts] || quizPrompts.speedrun}
+
+            Create engaging, game-like questions based on the note content. Use modern, relatable language but keep it educational.
+
+            Return JSON in this format:
+            {
+              "mode": "${mode}",
+              "questions": [
+                {
+                  "id": 1,
+                  "question": "Question text with gaming elements",
+                  "options": ["A) Option", "B) Option", "C) Option", "D) Option"],
+                  "correct": 0,
+                  "explanation": "Why this answer is correct",
+                  "points": 100,
+                  "difficulty": "easy|medium|hard",
+                  "powerUp": "shield|speed|double-points|none"
+                }
+              ],
+              "gameElements": {
+                "theme": "Battle/Speed/Survival theme description",
+                "instructions": "How to play this mode",
+                "scoring": "Scoring system explanation"
+              }
+            }`
+          },
+          {
+            role: "user",
+            content: `Generate a ${mode} mode quiz from this note:\n\nTitle: ${note.title}\nContent: ${note.content}`
+          }
+        ],
+        response_format: { type: "json_object" },
+        max_tokens: 1500,
+      });
+
+      const quiz = JSON.parse(completion.choices[0].message.content || "{}");
+      res.json(quiz);
+    } catch (error) {
+      console.error("Quiz generation error:", error);
+      res.status(500).json({ message: "Failed to generate quiz" });
+    }
+  });
+
   // AI-powered note analysis
   app.post("/api/notes/:id/analyze", async (req, res) => {
     try {

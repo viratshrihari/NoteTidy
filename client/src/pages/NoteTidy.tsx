@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { UploadTab } from "@/components/tabs/UploadTab";
 import { NotesTab } from "@/components/tabs/NotesTab";
+import { QuizTab } from "@/components/tabs/QuizTab";
 import { ChatTab } from "@/components/tabs/ChatTab";
 import { SettingsTab } from "@/components/tabs/SettingsTab";
 import { useApp } from "@/contexts/AppContext";
@@ -30,6 +31,11 @@ export default function NoteTidy() {
         {/* My Notes Tab */}
         <div className={`tab-content ${state.currentTab === "notesTab" ? "active" : ""}`}>
           <NotesTab />
+        </div>
+
+        {/* Quiz Arena Tab */}
+        <div className={`tab-content ${state.currentTab === "quizTab" ? "active" : ""}`}>
+          <QuizTab />
         </div>
 
         {/* Smart Chat Tab */}

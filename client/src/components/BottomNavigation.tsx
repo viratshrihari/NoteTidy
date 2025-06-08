@@ -1,9 +1,10 @@
-import { CloudUpload, StickyNote, MessageCircle, Settings } from "lucide-react";
+import { CloudUpload, StickyNote, MessageCircle, Settings, Gamepad2 } from "lucide-react";
 import { useApp } from "@/contexts/AppContext";
 
 const tabs = [
   { id: "uploadTab", label: "Upload", icon: CloudUpload },
   { id: "notesTab", label: "My Notes", icon: StickyNote },
+  { id: "quizTab", label: "Quiz Arena", icon: Gamepad2 },
   { id: "chatTab", label: "Smart Chat", icon: MessageCircle },
   { id: "settingsTab", label: "Settings", icon: Settings },
 ];
