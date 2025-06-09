@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NoteCard } from "@/components/NoteCard";
-import { NativeAd } from "@/components/AdBanner";
+import { AdSenseInFeed } from "@/components/GoogleAdsense";
 import { useApp } from "@/contexts/AppContext";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -114,10 +114,10 @@ export function NotesTab() {
                   note={note}
                   onClick={() => handleNoteClick(note)}
                 />
-                {/* Show native ad after every 4th note */}
+                {/* Show in-feed ad after every 4th note */}
                 {(index + 1) % 4 === 0 && (
                   <div className="md:col-span-2 lg:col-span-3">
-                    <NativeAd />
+                    <AdSenseInFeed adSlot="5555555555" />
                   </div>
                 )}
               </>

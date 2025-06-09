@@ -8,7 +8,7 @@ import { StudyToolsTab } from "@/components/tabs/StudyToolsTab";
 import { QuizTab } from "@/components/tabs/QuizTab";
 import { ChatTab } from "@/components/tabs/ChatTab";
 import { SettingsTab } from "@/components/tabs/SettingsTab";
-import { AdBanner } from "@/components/AdBanner";
+import { AdSenseBanner } from "@/components/GoogleAdsense";
 import { useApp } from "@/contexts/AppContext";
 
 export default function NoteTidy() {
@@ -24,7 +24,7 @@ export default function NoteTidy() {
       <Header />
       
       {/* Top Banner Ad */}
-      <AdBanner position="top" size="small" />
+      <AdSenseBanner adSlot="1234567890" height="90px" className="sticky top-16 z-30" />
       
       <main className="flex-1 pt-4">
         
@@ -63,7 +63,7 @@ export default function NoteTidy() {
       <BottomNavigation />
       
       {/* Bottom Banner Ad */}
-      <AdBanner position="bottom" size="small" />
+      <AdSenseBanner adSlot="0987654321" height="60px" className="fixed bottom-16 left-0 right-0 z-30" />
 
       {/* Floating Action Button */}
       <Button
