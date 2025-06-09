@@ -247,8 +247,12 @@ export function UploadTab() {
               <div className="flex flex-wrap gap-3">
                 <Button
                   onClick={handleEnhanceNote}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    if (!enhanceNoteMutation.isPending) handleEnhanceNote();
+                  }}
                   disabled={enhanceNoteMutation.isPending}
-                  className="flex items-center bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  className="mobile-button flex items-center bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                 >
                   {enhanceNoteMutation.isPending ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -260,9 +264,13 @@ export function UploadTab() {
                 
                 <Button
                   onClick={() => handleSaveNote(false)}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    if (!saveNoteMutation.isPending) handleSaveNote(false);
+                  }}
                   disabled={saveNoteMutation.isPending}
                   variant="outline"
-                  className="flex items-center"
+                  className="mobile-button flex items-center"
                 >
                   {saveNoteMutation.isPending ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -272,7 +280,15 @@ export function UploadTab() {
                   Save Raw Text
                 </Button>
                 
-                <Button variant="outline" onClick={handleCopyText} className="flex items-center">
+                <Button 
+                  variant="outline" 
+                  onClick={handleCopyText}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    handleCopyText();
+                  }}
+                  className="mobile-button flex items-center"
+                >
                   <Copy className="mr-2 h-4 w-4" />
                   Copy Text
                 </Button>
