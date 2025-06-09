@@ -25,6 +25,12 @@ export function useSwipeGestures(options: SwipeGestureOptions) {
     if (!element) return;
 
     const handleTouchStart = (e: TouchEvent) => {
+      // Don't interfere with button clicks
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'BUTTON' || target.closest('button') || target.getAttribute('role') === 'button') {
+        return;
+      }
+      
       const touch = e.touches[0];
       touchStartRef.current = {
         x: touch.clientX,
@@ -34,6 +40,13 @@ export function useSwipeGestures(options: SwipeGestureOptions) {
 
     const handleTouchEnd = (e: TouchEvent) => {
       if (!touchStartRef.current) return;
+
+      // Don't interfere with button clicks
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'BUTTON' || target.closest('button') || target.getAttribute('role') === 'button') {
+        touchStartRef.current = null;
+        return;
+      }
 
       const touch = e.changedTouches[0];
       const deltaX = touch.clientX - touchStartRef.current.x;

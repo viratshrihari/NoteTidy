@@ -85,8 +85,21 @@ export default function NoteTidy() {
       {/* Floating Action Button */}
       <Button
         onClick={handleQuickNote}
-        className="mobile-fab mobile-button bg-primary hover:bg-primary/90 text-white shadow-xl"
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          handleQuickNote();
+        }}
+        className="mobile-fab mobile-button touch-target bg-primary hover:bg-primary/90 text-white shadow-xl"
         size="icon"
+        style={{
+          touchAction: 'manipulation',
+          WebkitTapHighlightColor: 'transparent',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          pointerEvents: 'auto',
+          position: 'fixed',
+          zIndex: 60
+        }}
       >
         <Plus className="h-7 w-7" />
       </Button>

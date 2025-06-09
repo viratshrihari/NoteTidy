@@ -24,11 +24,24 @@ export function BottomNavigation() {
           <button
             key={id}
             onClick={() => handleTabClick(id)}
-            className={`mobile-nav-item touch-manipulation ${
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              handleTabClick(id);
+            }}
+            className={`mobile-nav-item mobile-button touch-target ${
               state.currentTab === id 
                 ? "text-primary bg-primary/10" 
                 : "text-muted-foreground hover:text-foreground active:bg-muted/50"
             }`}
+            style={{
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
+              pointerEvents: 'auto',
+              position: 'relative',
+              zIndex: 50
+            }}
           >
             <Icon className="h-6 w-6 mb-1" />
             <span className="text-xs font-medium truncate px-1">{label}</span>
