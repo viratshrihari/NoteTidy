@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
-import { NativeAd } from "../AdBanner";
+import { AdSenseRectangle } from "../GoogleAdsense";
 import { Brain, BookOpen, GitBranch, TrendingDown, RotateCcw, CheckCircle, AlertCircle, Target } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "../../hooks/use-toast";
@@ -211,8 +211,8 @@ export function StudyToolsTab() {
           <p className="text-muted-foreground">Advanced study features powered by AI</p>
         </div>
 
-        {/* Native Ad in Study Tools */}
-        <NativeAd className="mb-4" />
+        {/* Rectangle Ad in Study Tools */}
+        <AdSenseRectangle adSlot="7777777777" className="mb-4" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Flashcards Tool */}
