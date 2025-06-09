@@ -11,13 +11,29 @@ import { SettingsTab } from "@/components/tabs/SettingsTab";
 import { AdSenseBanner } from "@/components/GoogleAdsense";
 import { Footer } from "@/components/Footer";
 import { useApp } from "@/contexts/AppContext";
+import { useSwipeGestures } from "@/hooks/useSwipeGestures";
 
 export default function NoteTidy() {
-  const { state } = useApp();
+  const { state, dispatch } = useApp();
+
+  const tabs = ["uploadTab", "notesTab", "studyToolsTab", "quizTab", "chatTab", "settingsTab"];
+  const currentTabIndex = tabs.indexOf(state.currentTab);
+
+  const navigateToTab = (direction: number) => {
+    const newIndex = currentTabIndex + direction;
+    if (newIndex >= 0 && newIndex < tabs.length) {
+      dispatch({ type: "SET_TAB", payload: tabs[newIndex] });
+    }
+  };
+
+  const swipeRef = useSwipeGestures({
+    onSwipeLeft: () => navigateToTab(1),
+    onSwipeRight: () => navigateToTab(-1),
+    threshold: 100
+  });
 
   const handleQuickNote = () => {
-    // TODO: Implement quick note creation modal
-    console.log("Quick note");
+    dispatch({ type: "SET_TAB", payload: "uploadTab" });
   };
 
   return (
@@ -27,7 +43,7 @@ export default function NoteTidy() {
       {/* Top Banner Ad */}
       <AdSenseBanner adSlot="1234567890" height="90px" className="sticky top-20 z-30" />
       
-      <main className="flex-1 px-4 pb-24 mobile-scroll">
+      <main ref={swipeRef} className="flex-1 px-4 pb-24 mobile-scroll swipeable">
         
         {/* Upload Notes Tab */}
         <div className={`tab-content ${state.currentTab === "uploadTab" ? "active" : ""}`}>
