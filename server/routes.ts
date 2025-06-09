@@ -559,6 +559,22 @@ SUMMARY:
     }
   });
 
+  // Serve ads.txt for AdSense verification
+  app.get("/ads.txt", (req, res) => {
+    res.type('text/plain');
+    res.send('google.com, pub-7101625990726152, DIRECT, f08c47fec0942fa0');
+  });
+
+  // Serve robots.txt for SEO
+  app.get("/robots.txt", (req, res) => {
+    res.type('text/plain');
+    res.send(`User-agent: *
+Allow: /
+Allow: /ads.txt
+
+Sitemap: ${req.protocol}://${req.get('host')}/sitemap.xml`);
+  });
+
   // Generate quiz questions from notes
   app.post("/api/notes/:id/quiz", async (req, res) => {
     try {
