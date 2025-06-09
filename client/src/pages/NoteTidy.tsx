@@ -25,9 +25,9 @@ export default function NoteTidy() {
       <Header />
       
       {/* Top Banner Ad */}
-      <AdSenseBanner adSlot="1234567890" height="90px" className="sticky top-16 z-30" />
+      <AdSenseBanner adSlot="1234567890" height="90px" className="sticky top-20 z-30" />
       
-      <main className="flex-1 pt-4">
+      <main className="flex-1 px-4 pb-24 mobile-scroll">
         
         {/* Upload Notes Tab */}
         <div className={`tab-content ${state.currentTab === "uploadTab" ? "active" : ""}`}>
@@ -69,10 +69,10 @@ export default function NoteTidy() {
       {/* Floating Action Button */}
       <Button
         onClick={handleQuickNote}
-        className="fixed bottom-24 right-6 w-14 h-14 rounded-full material-shadow-lg transition-all duration-300 hover:scale-105 p-0"
+        className="mobile-fab mobile-button bg-primary hover:bg-primary/90 text-white shadow-xl"
         size="icon"
       >
-        <Plus className="h-6 w-6" />
+        <Plus className="h-7 w-7" />
       </Button>
       
       <Footer />

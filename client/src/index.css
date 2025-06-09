@@ -2,6 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-first optimizations */
+@layer base {
+  html {
+    /* Prevent zoom on input focus */
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    /* Smooth scrolling and better mobile performance */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+  }
+  
+  /* Better touch targets */
+  button, [role="button"], input, select, textarea {
+    min-height: 44px; /* Apple's recommended minimum touch target */
+  }
+  
+  /* Improve text input on mobile */
+  input[type="text"], input[type="email"], textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+@layer components {
+  /* Mobile-friendly card styling */
+  .mobile-card {
+    @apply p-4 rounded-xl shadow-sm border bg-card text-card-foreground;
+    @apply hover:shadow-md transition-shadow duration-200;
+    /* Larger touch area on mobile */
+    @apply min-h-[60px] flex items-center;
+  }
+  
+  /* Better mobile navigation */
+  .mobile-nav-item {
+    @apply flex flex-col items-center justify-center;
+    @apply min-h-[60px] px-2 py-1;
+    @apply text-xs font-medium;
+    @apply transition-colors duration-150;
+  }
+  
+  /* Improved mobile buttons */
+  .mobile-button {
+    @apply min-h-[48px] px-6 py-3;
+    @apply text-base font-medium;
+    @apply rounded-xl;
+    @apply active:scale-95 transition-transform duration-150;
+  }
+  
+  /* Better mobile form inputs */
+  .mobile-input {
+    @apply h-12 px-4 text-base;
+    @apply rounded-xl border-2;
+    @apply focus:border-primary focus:ring-2 focus:ring-primary/20;
+    @apply transition-all duration-200;
+  }
+  
+  /* Mobile-optimized floating button */
+  .mobile-fab {
+    @apply fixed bottom-20 right-4;
+    @apply w-14 h-14 rounded-full;
+    @apply shadow-lg hover:shadow-xl;
+    @apply active:scale-90 transition-all duration-200;
+    @apply z-50;
+  }
+  
+  /* Swipe-friendly areas */
+  .swipeable {
+    @apply cursor-grab active:cursor-grabbing;
+    @apply select-none;
+  }
+  
+  /* Mobile-safe z-indexes */
+  .mobile-header { @apply z-40; }
+  .mobile-nav { @apply z-30; }
+  .mobile-modal { @apply z-50; }
+  .mobile-toast { @apply z-60; }
+}
+
+/* Mobile-specific utilities */
+@layer utilities {
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  .safe-area-inset {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* Hide scrollbars on mobile for cleaner look */
+  .mobile-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .mobile-scroll::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 :root {
   --background: hsl(0, 0%, 98%);
   --foreground: hsl(210, 11%, 13%);

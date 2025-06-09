@@ -12,32 +12,35 @@ export function Header() {
   };
 
   return (
-    <header className="bg-primary dark:bg-primary text-white material-shadow sticky top-0 z-50">
-      <div className="flex items-center justify-between px-4 py-3">
+    <header className="bg-primary dark:bg-primary text-white mobile-header sticky top-0 safe-area-inset">
+      <div className="flex items-center justify-between px-4 py-4">
         <div className="flex items-center space-x-3">
-          <div className="w-6 h-6 bg-white bg-opacity-20 rounded flex items-center justify-center">
-            <span className="text-sm font-bold">N</span>
+          <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+            <span className="text-base font-bold">N</span>
           </div>
-          <h1 className="text-lg font-medium">NoteTidy</h1>
+          <div className="flex flex-col">
+            <h1 className="text-xl font-semibold leading-tight">NoteTidy</h1>
+            <span className="text-xs text-white/80 leading-tight">AI Study Platform</span>
+          </div>
         </div>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
           <Button
             variant="ghost"
-            size="sm"
+            size="icon"
             onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors text-white hover:text-white"
+            className="h-12 w-12 rounded-full hover:bg-white hover:bg-opacity-20 transition-all text-white hover:text-white touch-manipulation active:scale-95"
           >
-            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           
           <Button
             variant="ghost"
-            size="sm"
+            size="icon"
             onClick={handleSettingsClick}
-            className="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors text-white hover:text-white"
+            className="h-12 w-12 rounded-full hover:bg-white hover:bg-opacity-20 transition-all text-white hover:text-white touch-manipulation active:scale-95"
           >
-            <Settings className="h-4 w-4" />
+            <Settings className="h-5 w-5" />
           </Button>
         </div>
       </div>

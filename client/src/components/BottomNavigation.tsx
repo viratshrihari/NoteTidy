@@ -18,18 +18,20 @@ export function BottomNavigation() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card dark:bg-card border-t border-border px-4 py-2 z-40">
-      <div className="flex justify-around">
+    <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border mobile-nav safe-area-inset">
+      <div className="flex justify-around px-2">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => handleTabClick(id)}
-            className={`tab-button flex flex-col items-center py-2 px-3 rounded-lg transition-colors touch-target ${
-              state.currentTab === id ? "active" : ""
+            className={`mobile-nav-item touch-manipulation ${
+              state.currentTab === id 
+                ? "text-primary bg-primary/10" 
+                : "text-muted-foreground hover:text-foreground active:bg-muted/50"
             }`}
           >
-            <Icon className="h-5 w-5 mb-1" />
-            <span className="text-xs">{label}</span>
+            <Icon className="h-6 w-6 mb-1" />
+            <span className="text-xs font-medium truncate px-1">{label}</span>
           </button>
         ))}
       </div>
