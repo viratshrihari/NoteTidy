@@ -9,6 +9,7 @@ import { QuizTab } from "@/components/tabs/QuizTab";
 import { ChatTab } from "@/components/tabs/ChatTab";
 import { SettingsTab } from "@/components/tabs/SettingsTab";
 import { AdSenseBanner } from "@/components/GoogleAdsense";
+import { Footer } from "@/components/Footer";
 import { useApp } from "@/contexts/AppContext";
 
 export default function NoteTidy() {
@@ -73,6 +74,8 @@ export default function NoteTidy() {
       >
         <Plus className="h-6 w-6" />
       </Button>
+      
+      <Footer />
     </div>
   );
 }
