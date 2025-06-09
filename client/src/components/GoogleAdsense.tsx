@@ -29,7 +29,7 @@ export function GoogleAdSense({
       <ins
         className="adsbygoogle"
         style={{ display: "block", ...style }}
-        data-ad-client={import.meta.env.VITE_ADSENSE_CLIENT_ID || "ca-pub-0000000000000000"}
+        data-ad-client="ca-pub-7101625990726152"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}
         data-full-width-responsive="true"
