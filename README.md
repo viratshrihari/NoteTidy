@@ -1,6 +1,6 @@
 # NoteTidy 📚
 
-An AI-powered study platform that transforms messy notes into organized, gamified learning experiences for students.
+An AI-powered study platform that transforms messy notes into organized, gamified learning experiences for students. This program was created with RepLit.
 
 ## Features
 
