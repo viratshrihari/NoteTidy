@@ -8,7 +8,7 @@ import path from "path";
 import fs from "fs";
 // PDF parsing will be handled on frontend for now
 
-// the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+// Using GPT-3.5-turbo for cost efficiency as requested by the user
 const openai = new OpenAI({ 
   apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR || "default_key"
 });
@@ -162,7 +162,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Generate AI response
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -248,7 +248,7 @@ SUMMARY:
       };
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -302,7 +302,7 @@ SUMMARY:
       }
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -368,7 +368,7 @@ SUMMARY:
       ).join('\n\n---\n\n');
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -438,7 +438,7 @@ SUMMARY:
       }));
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -499,7 +499,7 @@ SUMMARY:
       }));
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -595,7 +595,7 @@ Sitemap: ${req.protocol}://${req.get('host')}/sitemap.xml`);
       };
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
@@ -653,7 +653,7 @@ Sitemap: ${req.protocol}://${req.get('host')}/sitemap.xml`);
       }
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
